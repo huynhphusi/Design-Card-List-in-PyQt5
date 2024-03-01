@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication, QVBoxLayout, QFrame, QLabel, QPushButton, QLineEdit, QHBoxLayout, QScrollArea
+from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 import dataController as dc
 

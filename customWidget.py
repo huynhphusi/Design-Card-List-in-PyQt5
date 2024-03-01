@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QFrame, QHBoxLayout, QDialog
+from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 
 import dataController as dc
@@ -10,15 +10,11 @@ class BookCard(QFrame):
         self.BookId, self.BookName, self.BookAuthor, self.BookPrice = BookId, BookName, BookAuthor, BookPrice
         self.mainWindow = mainWindow
 
-        # Tạo QFrame con để áp dụng border
-        #self.borderFrame = QFrame()
-        #self.borderFrame.setStyleSheet("border: 1px solid #ccc;")
-
         self.setStyleSheet("background: #FFFFFF; border: 1px solid #ccc; border-radius: 5px; color: #000000;")
 
         layout = QVBoxLayout()
         labelName = QLabel(f"<b>{BookName}</b>")
-        labelName.setStyleSheet("border: 0px; padding: 10px 10px 0 10px;")
+        labelName.setStyleSheet("border: 0px; border-bottom: 1px solid #ccc; border-radius: 0px; padding: 10px 0; margin: 0 10px;")
         labelAuthor = QLabel(f"<i>{BookAuthor}</i>")
         labelAuthor.setStyleSheet("border: 0px; padding: 10px 10px 0 10px;")
         labelPrice = QLabel(f"<i>{BookPrice}</i>")

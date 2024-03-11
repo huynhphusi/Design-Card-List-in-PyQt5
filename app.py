@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
-import dataController as dc
 
+import dataController as dc
 from customWidget import *
 
 class MainWindow(QMainWindow):
@@ -31,9 +31,31 @@ class MainWindow(QMainWindow):
             QLineEdit:focus {
                 border: 1px solid #000;
             }
-                           
             QLabel {
                 font-size: 11pt;
+            }
+            
+            QScrollBar:vertical {
+                border: none;
+                background:white;
+                width:3px;
+                margin: 0px 0px 0px 0px;
+            }
+            QScrollBar::handle:vertical {
+                background: #aa00ff;
+                min-height: 0px;
+            }
+            QScrollBar::add-line:vertical {
+                background: #aa00ff;
+                height: 0px;
+                subcontrol-position: bottom;
+                subcontrol-origin: margin;
+            }
+            QScrollBar::sub-line:vertical {
+                background: #aa00ff;
+                height: 0 px;
+                subcontrol-position: top;
+                subcontrol-origin: margin;
             }
         """)
 
@@ -45,8 +67,7 @@ class MainWindow(QMainWindow):
         self.bookAuthor = QLineEdit()
         self.bookAuthor.setPlaceholderText("Book author")
         self.bookPrice = QLineEdit()
-        self.bookPrice.setPlaceholderText("$")
-        
+        self.bookPrice.setPlaceholderText("Book price")
         self.buttonAdd = QPushButton(text="Add book")
         self.buttonAdd.setCursor(Qt.PointingHandCursor)
         self.buttonAdd.clicked.connect(self.addBook)
@@ -58,7 +79,7 @@ class MainWindow(QMainWindow):
         self.mainLayout.addWidget(QLabel("Book price:"))
         self.mainLayout.addWidget(self.bookPrice)
         self.mainLayout.addWidget(self.buttonAdd)
-        
+
         scrollFrame = QFrame()
         self.scrollLayout = QVBoxLayout(scrollFrame)
 
@@ -66,8 +87,6 @@ class MainWindow(QMainWindow):
         scrollArea.setWidgetResizable(True)
         scrollArea.setWidget(scrollFrame)
         scrollArea.setStyleSheet("QScrollArea{border: 0pt}")
-
-        self.scrollLayout.addStretch()
         self.mainLayout.addWidget(scrollArea)
 
         self.setCentralWidget(self.mainFrame)
@@ -80,35 +99,27 @@ class MainWindow(QMainWindow):
         book_price = self.bookPrice.text()
 
         if book_name and book_author and book_price:
-            self.mainWindow.addBook(book_name, book_author, book_price)
-            self.mainWindow.loadBookList()
+            dc.insertBook(book_name, book_author, book_price)
+            self.loadBookList()
             self.bookName.clear()
             self.bookAuthor.clear()
             self.bookPrice.clear()
 
     def loadBookList(self):
-        # clear exist book cards before reload
         for i in reversed(range(self.scrollLayout.count())):
             widget = self.scrollLayout.itemAt(i).widget()
             if widget is not None:
                 widget.deleteLater()
-        
+
         bookList = dc.getBookAll()
 
         for book in bookList:
             frame = BookCard(*book, self)
             self.scrollLayout.insertWidget(0, frame)
 
-    def addBook(self, bookName, bookAuthor, bookPrice):
-        dc.insertBook(bookName, bookAuthor, bookPrice)
-
-    def updateBook(self, BookId, BookName, BookAuthor, BookPrice):
-        dc.updateBook(BookId, BookName, BookAuthor, BookPrice)
-        self.loadBookList()
-
 if __name__ == "__main__":
     app = QApplication([])
-    
+
     window = MainWindow()
     window.show()
 
